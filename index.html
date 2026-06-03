@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brooks Creations | Nail Tech</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    ::-webkit-scrollbar{ width:10px; }
+    ::-webkit-scrollbar-track{ background:#eee6ff; }
+    ::-webkit-scrollbar-thumb{ background:#5f2ca5; border-radius:10px; border:2px solid #eee6ff; }
+    body{ font-family:'Poppins', sans-serif; background:#eee6ff; color:#222; line-height:1.6; overflow-x: hidden; }
+
+    header{
+      min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 20px;
+      background: linear-gradient(rgba(70,25,120,.72), rgba(70,25,120,.72)), #461978 url("images/hero.jpg");
+      background-size:cover; background-position:center; color:white;
+    }
+
+    .hero {
+      max-width: 800px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      padding: 60px 30px; border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hero h1{
+      font-size: clamp(2.5rem, 8vw, 4.2rem); line-height:1.1; margin-bottom:15px; font-weight:800; letter-spacing:2px;
+      text-transform:uppercase; background: linear-gradient(to right, #ffffff, #d8c3ff);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+
+    .hero h2{ font-size:1.2rem; font-weight:400; margin-bottom:25px; letter-spacing:4px; text-transform:uppercase; opacity: 0.9; }
+
+    .hero-btn, .instagram-btn, .submit-btn { display:inline-block; text-decoration:none; padding:16px 36px; border-radius:50px; font-weight:600; transition:.3s; cursor: pointer; border: none; }
+    .hero-btn { margin-top:20px; background:#f4edff; color:#5f2ca5; }
+    .hero-btn:hover, .instagram-btn:hover, .submit-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2); }
+
+    section { padding: 90px 20px; }
+    .container{ max-width:1100px; margin:auto; }
+    .section-title{ text-align:center; font-size:2.4rem; color:#5f2ca5; margin-bottom:50px; font-weight:700; }
+
+    .about-flex { display:flex; align-items:center; gap:40px; background:white; padding:3.5rem; border-radius:32px; box-shadow: 0 15px 40px rgba(95,44,165,0.08); margin:auto; }
+    .about-img{ width:320px; height:320px; object-fit:cover; border-radius:24px; border: 6px solid #f4edff; }
+    .about-text p{ font-size:1.05rem; color:#444; }
+    .highlight{ color:#5f2ca5; font-weight:700; }
+
+    .hours-grid, .policy-grid, .dynamic-services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; }
+    .hours-card, .policy-card, .service-card { background:white; padding:35px 25px; border-radius:24px; text-align:center; border:1px solid rgba(95,44,165,0.08); transition:.3s; }
+    .hours-card:hover, .policy-card:hover, .service-card:hover{ transform: translateY(-8px); box-shadow: 0 15px 30px rgba(95,44,165,0.12); }
+    .hours-card h3, .policy-card h3, .service-card h3 { color:#5f2ca5; margin-bottom:12px; font-size:1.2rem; }
+
+    .service-card { background-color: #ffffff !important; border-radius: 24px; padding: 30px 20px; text-align: center; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .service-card h3 { color: #2C1A53; font-size: 1.4rem; margin-bottom: 20px; font-weight: bold; }
+    .service-card p { color: #4A3E65; margin: 10px 0; font-size: 1.05rem; }
+    .service-card strong { color: #2C1A53; }
+
+    .form-container { background: white; padding: 40px; border-radius: 32px; box-shadow: 0 15px 40px rgba(95,44,165,0.08); max-width: 650px; margin: 0 auto; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #5f2ca5; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 18px; border: 2px solid #e1d5f5; border-radius: 12px; font-family: inherit; font-size: 1rem; outline: none; transition: 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #5f2ca5; }
+    
+    .submit-btn { background: #5f2ca5; color: white; width: 100%; margin-top: 15px; }
+    .contact-box{ background: linear-gradient(135deg, #5f2ca5, #461978); border-radius:35px; padding:50px 30px; text-align:center; color:white; box-shadow: 0 20px 50px rgba(95,44,165,0.2); }
+    footer{ background:#5f2ca5; color:white; text-align:center; padding:40px 20px; }
+
+    /* CUSTOM CALENDAR BEAUTIFICATION */
+    .calendar-wrapper { border: 2px solid #e1d5f5; border-radius: 16px; padding: 20px; background: #faf8ff; }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .calendar-header h3 { color: #5f2ca5; font-size: 1.2rem; font-weight: 600; }
+    .calendar-nav-btn { background: #5f2ca5; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+    .calendar-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+    .calendar-day-label { font-weight: 600; color: #5f2ca5; font-size: 0.85rem; padding-bottom: 5px; }
+    
+    .calendar-cell { padding: 10px 0; border-radius: 10px; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: 0.2s; background: white; border: 1px solid #eee6ff; min-height: 42px; display: flex; align-items: center; justify-content: center; }
+    .calendar-cell.empty { background: transparent; border: none; cursor: default; }
+    .calendar-cell.past, .calendar-cell.closed, .calendar-cell.blocked { background: #f1f1f1; color: #ccc; text-decoration: line-through; cursor: not-allowed; }
+    .calendar-cell.selected { background: #5f2ca5 !important; color: white !important; font-weight: bold; box-shadow: 0 4px 10px rgba(95,44,165,0.3); }
+    .calendar-cell:not(.past):not(.closed):not(.blocked):not(.empty):hover { background: #e1d5f5; color: #5f2ca5; }
+
+    /* GRID TIME SLOT STYLES */
+    .slots-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 10px; }
+    .time-slot-badge { border: 2px solid #e1d5f5; background: white; padding: 10px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: 0.2s; color: #5f2ca5; }
+    .time-slot-badge:hover { background: #e1d5f5; }
+    .time-slot-badge.selected { background: #5f2ca5; color: white; border-color: #5f2ca5; }
+    
+    .custom-toast { display: none; background: #ffefef; border: 2px solid #ffcccc; color: #cc0000; padding: 12px 20px; border-radius: 12px; margin-bottom: 15px; font-size: 0.9rem; font-weight: 500; text-align: center; }
+
+    /* Custom Toast Pop-up Layout */
+    .toast-notification {
+      position: fixed;
+      top: -100px;
+      right: 20px;
+      background: white;
+      color: #333;
+      padding: 16px 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(95, 44, 165, 0.2);
+      border-left: 5px solid #5f2ca5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      z-index: 9999;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .toast-notification.show { top: 20px; }
+    .toast-notification.success { border-left-color: #28a745; }
+    .toast-notification.error { border-left-color: #dc3545; }
+
+    @media(max-width:768px){
+      header{ min-height:85vh; padding:20px; }
+      .hero h1{ font-size:2.6rem; }
+      .about-flex{ flex-direction:column; text-align:center; padding:25px; }
+      .about-img{ width:100%; max-width:280px; height:auto; }
+      section{ padding:65px 15px; }
+    }
+    .instagram-btn{ margin-top:25px; display:inline-block; background:white; color:#5f2ca5; padding:14px 28px; border-radius:50px; font-weight:600; text-decoration:none; transition:.3s; }
+  </style>
+</head>
+
+<body>
+
+  <div id="custom-toast" class="toast-notification">✨ <span id="toast-message"></span></div>
+
+  <header>
+    <div class="hero">
+      <h1>BROOKS CREATIONS</h1>
+      <h2>Nail Tech</h2>
+      <p><strong>Brooklynn White</strong></p>
+      <p>Beginner Nail Artist • Home Based</p>
+      <p>Greensboro, North Carolina</p>
+      <p>$10 Non-Refundable Deposit Required</p>
+      <a class="hero-btn" href="#booking">Book Appointment Online</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">Meet Your Nail Tech</h2>
+        <div class="about-flex">
+          <img class="about-img" src="images/brook.jpg" alt="Brooklynn White Nail Tech">
+          <div class="about-text">
+            <p>Hello to all my beautiful clients and future clients! I’m Brooklynn, but y’all can call me Brook.</p>
+            <br>
+            <p>I’ve been doing nails for about 2 years and I’m still growing in my journey. Thank you to all my returning clients for trusting me to slay your nails!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="hours">
+      <div class="container">
+        <h2 class="section-title">Business Hours</h2>
+        <div class="hours-grid">
+          <div class="hours-card">
+            <h3>Mon, Wed, Fri, Sat</h3>
+            <p>5:30 PM - 8:30 PM</p>
+          </div>
+          <div class="hours-card">
+            <h3>Tuesday & Thursday</h3>
+            <p>5:00 AM - 9:00 PM</p>
+          </div>
+          <div class="hours-card">
+            <h3>Sunday</h3>
+            <p>Closed</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="container">
+        <h2 class="section-title">Pricing</h2>
+        <div id="services-target" class="dynamic-services-grid">
+          <p style="text-align: center; grid-column: 1/-1;">Loading menu options directly from database...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="booking" style="background: #f4edff;">
+      <div class="container">
+        <h2 class="section-title">Secure Your Slot</h2>
+        <div class="form-container">
+          
+          <div id="validation-toast" class="custom-toast"></div>
+
+          <form id="appointmentForm">
+            <div class="form-group">
+              <label for="form_name">Full Name</label>
+              <input type="text" id="form_name" required placeholder="Cardi B">
+            </div>
+            <div class="form-group">
+              <label for="form_email">Email Address</label>
+              <input type="email" id="form_email" required placeholder="cardi@example.com">
+            </div>
+            <div class="form-group">
+              <label for="form_phone">Phone Number</label>
+              <input type="tel" id="form_phone" required placeholder="(336) 555-0199">
+            </div>
+            <div class="form-group">
+              <label for="form_service">Select Nail Design/Service</label>
+              <select id="form_service" required>
+                <option value="">-- Choose a Service --</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Choose Appointment Date</label>
+              <div class="calendar-wrapper">
+                <div class="calendar-header">
+                  <button type="button" class="calendar-nav-btn" onclick="moveMonth(-1)">&lt;</button>
+                  <h3 id="calendar-month-year-label">Month Year</h3>
+                  <button type="button" class="calendar-nav-btn" onclick="moveMonth(1)">&gt;</button>
+                </div>
+                <div class="calendar-days-grid" id="calendar-grid-target"></div>
+              </div>
+            </div>
+
+            <div class="form-group" id="time-slots-wrapper" style="display:none;">
+              <label id="time-slots-label">Available Arrival Slots</label>
+              <div class="slots-container" id="slots-grid-target"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="form_notes">Inspo Details / Custom Requests</label>
+              <textarea id="form_notes" rows="3" placeholder="Let me know if you want gems, charms..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Request Appointment & Submit Details</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="policies">
+      <div class="container">
+        <h2 class="section-title">Booking Policies</h2>
+        <div class="policy-grid">
+          <div class="policy-card">
+            <h3>Cancellations</h3>
+            <p>24-hour notice required to cancel or reschedule.</p>
+          </div>
+          <div class="policy-card">
+            <h3>Deposits</h3>
+            <p>A <span class="highlight">$10 non-refundable deposit</span> is required for all sets.</p>
+          </div>
+          <div class="policy-card">
+            <h3>Late Policy</h3>
+            <p>10-minute grace period. After 10 minutes, a <span class="highlight">$10 late fee</span> applies.</p>
+            <p>After 15 minutes, your appointment will be <span class="highlight">cancelled</span>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="contact-box">
+          <h2 class="section-title" style="color:white;">Stay Connected</h2>
+          <p><strong>Phone:</strong> (336) 417-9186</p>
+          <p><strong>Email:</strong> brookscreations@gmail.com</p>
+          <p><strong>Instagram:</strong> @brookscreations</p>
+          <p><strong>TikTok:</strong> @brookscreations</p>
+          <a class="instagram-btn" href="https://instagram.com/brookscreations" target="_blank">Follow on Instagram</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Thank You For Booking ✨ | Greensboro, NC</p>
+  </footer>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://bikbkzteuhqkjqmgzzes.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpa2JrenRldWhxa2pxbWd6emVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0Mjg0NjgsImV4cCI6MjA5NjAwNDQ2OH0.aJK3xbjIBaXZWA7an_m4Vgts4kTIryc-iyysGlgT-cg';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Toast Pop-up Helper Function
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('custom-toast');
+      toast.className = `toast-notification ${type} show`;
+      toast.innerHTML = `${type === 'success' ? '✨' : '❌'} <span id="toast-message">${message}</span>`;
+      setTimeout(() => { toast.classList.remove('show'); }, 3500);
+    }
+
+    const serviceDurations = {
+      "Full Sets": 90,
+      "Frenchie Full Set": 105,
+      "Freestyle Full Set": 120,
+      "Inspo Sets": 120,
+      "Fill-Ins": 75,
+      "Extras": 30
+    };
+
+    let currentDateTracker = new Date();
+    let selectedDateStr = "";
+    let selectedTimeStr = "";
+    let globalBlockedDaysList = [];
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    async function initializeEngine() {
+      await loadDatabaseContent();
+      await fetchBlockedDates();
+      renderCustomCalendar();
+    }
+
+    async function fetchBlockedDates() {
+      try {
+        const { data, error } = await db.from('blocked_dates').select('blocked_date');
+        if (!error && data) {
+          globalBlockedDaysList = data.map(item => item.blocked_date);
+        }
+      } catch (err) { console.error("Error loading blocked dates:", err); }
+    }
+
+    async function loadDatabaseContent() {
+      try {
+        const { data: services, error } = await db.from('services').select('*').eq('is_active', true).order('price', { ascending: true });
+        if (error) throw error;
+        
+        const servicesGrid = document.getElementById('services-target');
+        const serviceDropdown = document.getElementById('form_service');
+        servicesGrid.innerHTML = '';
+        serviceDropdown.innerHTML = '<option value="">-- Choose a Service --</option>';
+
+        const categories = {
+          "Full Sets": [],
+          "Frenchie Full Set": [],
+          "Freestyle Full Set": [],
+          "Inspo Sets": [],
+          "Fill-Ins": [],
+          "Extras": []
+        };
+
+        services.forEach(service => {
+          const name = service.name.toLowerCase();
+          let assignedCategory = "Extras";
+
+          if (name.includes("frenchie")) {
+            assignedCategory = "Frenchie Full Set";
+          } else if (name.includes("freestyle")) {
+            assignedCategory = "Freestyle Full Set";
+          } else if (name.includes("full set")) {
+            assignedCategory = "Full Sets";
+          } else if (name.includes("inspo")) {
+            assignedCategory = "Inspo Sets";
+          } else if (name.includes("fill")) {
+            assignedCategory = "Fill-Ins";
+          }
+
+          categories[assignedCategory].push(service);
+
+          const duration = serviceDurations[service.name] || service.duration_minutes || 90;
+          const option = document.createElement('option');
+          option.value = service.id;
+          option.dataset.duration = duration;
+          option.textContent = `${service.name}`;
+          serviceDropdown.appendChild(option);
+        });
+
+        for (const [title, items] of Object.entries(categories)) {
+          const card = document.createElement('div');
+          card.className = 'service-card';
+          card.style.backgroundColor = '#ffffff'; 
+          
+          let cardHTML = `<h3>${title}</h3>`;
+
+          if (items.length > 0) {
+            items.forEach(item => {
+              if (title === "Extras") {
+                const displayPrice = parseFloat(item.price) === 0 ? "Free within 1 week" : `$${parseFloat(item.price).toFixed(0)}`;
+                cardHTML += `<p><strong>${item.name}:</strong> ${displayPrice}</p>`;
+              } else {
+                let cleanLabel = item.name
+                  .replace(/Frenchie Full Set/i, "")
+                  .replace(/Freestyle Full Set/i, "")
+                  .replace(/Full Set/i, "")
+                  .replace(/Inspo Sets/i, "")
+                  .trim();
+
+                if (item.name.toLowerCase().includes("extendo")) {
+                  cleanLabel = "8+ Extendo";
+                } else if (cleanLabel) {
+                  cleanLabel = cleanLabel.charAt(0).toUpperCase() + cleanLabel.slice(1);
+                }
+
+                cardHTML += `<p><strong>${cleanLabel || "Base"}:</strong> $${parseFloat(item.price).toFixed(0)}</p>`;
+              }
+            });
+          } else {
+            if (title === "Full Sets") {
+              cardHTML += `<p><strong>Short:</strong> $25</p><p><strong>Medium:</strong> $30</p><p><strong>Long:</strong> $45</p><p><strong>XL:</strong> $50</p>`;
+            } else if (title === "Frenchie Full Set") {
+              cardHTML += `<p><strong>Short:</strong> $30</p><p><strong>Medium:</strong> $35</p><p><strong>Long:</strong> $50</p><p><strong>XL:</strong> $55</p>`;
+            } else if (title === "Freestyle Full Set") {
+              cardHTML += `<p><strong>Short:</strong> $35</p><p><strong>Medium:</strong> $40</p><p><strong>Long:</strong> $55</p><p><strong>XL:</strong> $60</p>`;
+            } else if (title === "Inspo Sets") {
+              cardHTML += `<p><strong>Short:</strong> $40</p><p><strong>Medium:</strong> $45</p><p><strong>Long:</strong> $60</p><p><strong>XL:</strong> $65</p><p><strong>8+ Extendo:</strong> $80</p>`;
+            } else if (title === "Fill-Ins") {
+              cardHTML += `<p><strong>Short:</strong> $40</p><p><strong>Medium:</strong> $50</p><p><strong>Long:</strong> $60</p>`;
+            }
+          }
+
+          card.innerHTML = cardHTML;
+          servicesGrid.appendChild(card);
+        }
+
+      } catch (err) { 
+        console.error("Error loading pricing section:", err); 
+      }
+    }
+
+    function renderCustomCalendar() {
+      const year = currentDateTracker.getFullYear();
+      const month = currentDateTracker.getMonth();
+      document.getElementById('calendar-month-year-label').textContent = `${monthNames[month]} ${year}`;
+      
+      const grid = document.getElementById('calendar-grid-target');
+      grid.innerHTML = '';
+
+      ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
+        const lbl = document.createElement('div');
+        lbl.className = 'calendar-day-label';
+        lbl.textContent = day;
+        grid.appendChild(lbl);
+      });
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+      const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+      const today = new Date();
+      today.setHours(0,0,0,0);
+
+      for (let i = 0; i < firstDayIndex; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-cell empty';
+        grid.appendChild(emptyCell);
+      }
+
+      for (let dayNum = 1; dayNum <= totalDaysInMonth; dayNum++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell';
+        cell.textContent = dayNum;
+
+        const loopDate = new Date(year, month, dayNum);
+        const formatYMD = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+        const dayOfWeek = loopDate.getDay();
+
+        if (loopDate < today) {
+          cell.classList.add('past');
+        } else if (dayOfWeek === 0) {
+          cell.classList.add('closed');
+        } else if (globalBlockedDaysList.includes(formatYMD)) {
+          cell.classList.add('blocked');
+        } else {
+          cell.addEventListener('click', () => {
+            document.querySelectorAll('.calendar-cell').forEach(c => c.classList.remove('selected'));
+            cell.classList.add('selected');
+            selectedDateStr = formatYMD;
+            generateTimeSlots(dayOfWeek, formatYMD);
+          });
+          if(selectedDateStr === formatYMD) cell.classList.add('selected');
+        }
+        grid.appendChild(cell);
+      }
+    }
+
+    window.moveMonth = function(direction) {
+      currentDateTracker.setMonth(currentDateTracker.getMonth() + direction);
+      renderCustomCalendar();
+    }
+
+    function timeStringToMinutes(timeStr) {
+      if (!timeStr) return 0;
+      const parts = timeStr.split(':');
+      return (parseInt(parts[0], 10) * 60) + parseInt(parts[1], 10);
+    }
+
+    async function generateTimeSlots(dayOfWeek, chosenDateYMD) {
+      const wrapper = document.getElementById('time-slots-wrapper');
+      const grid = document.getElementById('slots-grid-target');
+      grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:#5f2ca5;">Checking openings...</p>';
+      selectedTimeStr = ""; 
+      wrapper.style.display = 'block';
+
+      let bookedRanges = [];
+      try {
+        const { data: activeAppointments, error } = await db
+          .from('appointments')
+          .select('start_time, end_time, status')
+          .eq('appointment_date', chosenDateYMD);
+        
+        if (!error && activeAppointments) {
+          bookedRanges = activeAppointments
+            .filter(app => app.status !== 'cancelled')
+            .map(app => ({
+              start: timeStringToMinutes(app.start_time),
+              end: timeStringToMinutes(app.end_time)
+            }));
+        }
+      } catch (err) { console.error(err); }
+
+      grid.innerHTML = '';
+      let startMinutes = 0, endMinutes = 0;
+
+      if ([1, 3, 5, 6].includes(dayOfWeek)) {
+        startMinutes = 1050; // 5:30 PM
+        endMinutes = 1230;   // 8:30 PM
+      } else if ([2, 4].includes(dayOfWeek)) {
+        startMinutes = 300;  // 5:00 AM
+        endMinutes = 1260;  // 9:00 PM
+      }
+
+      const selectedService = document.getElementById('form_service');
+      const currentDuration = selectedService.value ? parseInt(selectedService.selectedOptions[0].dataset.duration, 10) : 90;
+      let slotsCreated = 0;
+
+      for (let currentSlotStart = startMinutes; currentSlotStart <= endMinutes; currentSlotStart += 30) {
+        const currentSlotEnd = currentSlotStart + currentDuration;
+        if (currentSlotEnd > endMinutes) continue;
+
+        const isOverlap = bookedRanges.some(booking => {
+          return (currentSlotStart < booking.end && currentSlotEnd > booking.start);
+        });
+
+        if (isOverlap) continue; 
+
+        slotsCreated++;
+        const hrs = Math.floor(currentSlotStart / 60);
+        const mins = currentSlotStart % 60;
+        const ampm = hrs >= 12 ? 'PM' : 'AM';
+        const displayHr = hrs % 12 === 0 ? 12 : hrs % 12;
+        const timeLabel = `${displayHr}:${String(mins).padStart(2, '0')} ${ampm}`;
+        const saveValue = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:00`;
+
+        const badge = document.createElement('div');
+        badge.className = 'time-slot-badge';
+        badge.textContent = timeLabel;
+        badge.addEventListener('click', () => {
+          document.querySelectorAll('.time-slot-badge').forEach(b => b.classList.remove('selected'));
+          badge.classList.add('selected');
+          selectedTimeStr = saveValue;
+        });
+        grid.appendChild(badge);
+      }
+
+      if (slotsCreated === 0) {
+        grid.innerHTML = '<p style="color:#ff4d4d; grid-column:1/-1; text-align:center; font-weight:500;">Fully Booked on this day!</p>';
+      }
+    }
+
+    document.getElementById('form_service').addEventListener('change', () => {
+      if (selectedDateStr) {
+        const d = new Date(selectedDateStr + 'T00:00:00');
+        generateTimeSlots(d.getDay(), selectedDateStr);
+      }
+    });
+
+    document.getElementById('appointmentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const toast = document.getElementById('validation-toast');
+      toast.style.display = 'none';
+
+      if (!selectedDateStr || !selectedTimeStr) {
+        showToast('Please pick both a date and an available time slot.', 'error');
+        return;
+      }
+
+      const duration = parseInt(document.getElementById('form_service').selectedOptions[0].dataset.duration, 10);
+      const startMins = timeStringToMinutes(selectedTimeStr);
+      const endMins = startMins + duration;
+
+      const endHr = Math.floor(endMins / 60);
+      const endMin = endMins % 60;
+      const formattedEndTime = `${String(endHr).padStart(2, '0')}:${String(endMin).padStart(2, '0')}:00`;
+
+      try {
+        const { data: doubleCheck } = await db.from('appointments')
+          .select('start_time, end_time, status')
+          .eq('appointment_date', selectedDateStr);
+
+        const finalConflict = doubleCheck?.some(b => {
+          if (b.status === 'cancelled') return false;
+          const bStart = timeStringToMinutes(b.start_time);
+          const bEnd = timeStringToMinutes(b.end_time);
+          return (startMins < bEnd && endMins > bStart);
+        });
+
+        if (finalConflict) {
+          showToast('Sorry, that exact slot was just taken! Refreshing hours.', 'error');
+          const d = new Date(selectedDateStr + 'T00:00:00');
+          generateTimeSlots(d.getDay(), selectedDateStr);
+          return;
+        }
+
+        const { error } = await db.from('appointments').insert([{
+          full_name: document.getElementById('form_name').value,
+          email: document.getElementById('form_email').value,
+          phone: document.getElementById('form_phone').value,
+          service_id: document.getElementById('form_service').value,
+          appointment_date: selectedDateStr,
+          start_time: selectedTimeStr,
+          end_time: formattedEndTime,
+          notes: document.getElementById('form_notes').value,
+          status: 'pending'
+        }]);
+
+        if (error) throw error;
+
+        showToast('Appointment requested! Checking details...', 'success');
+        document.getElementById('appointmentForm').reset();
+        document.getElementById('time-slots-wrapper').style.display = 'none';
+        selectedDateStr = ""; selectedTimeStr = "";
+        renderCustomCalendar();
+      } catch (err) { showToast('Error: ' + err.message, 'error'); }
+    });
+
+    window.addEventListener('DOMContentLoaded', initializeEngine);
+  </script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brooks Creations | Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #f4edff; color: #222; padding: 20px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    
+    #login-screen { max-width: 400px; margin: 100px auto; background: white; padding: 40px; border-radius: 24px; box-shadow: 0 10px 30px rgba(95,44,165,0.1); text-align: center; display: none; }
+    #login-screen h2 { color: #5f2ca5; margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #5f2ca5; }
+    .form-group input { width: 100%; padding: 12px; border: 2px solid #e1d5f5; border-radius: 12px; outline: none; }
+    
+    .btn { width: 100%; padding: 14px; background: #5f2ca5; color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn:hover { background: #461978; transform: translateY(-2px); }
+
+    #dashboard-screen { display: none; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; background: white; padding: 20px 30px; border-radius: 20px; box-shadow: 0 4px 20px rgba(95,44,165,0.05); }
+    header h1 { color: #5f2ca5; font-size: 1.8rem; }
+    .logout-btn { background: #ff4d4d; padding: 8px 18px; border-radius: 20px; color: white; font-size: 0.9rem; font-weight: 600; border: none; cursor: pointer; }
+
+    .card { background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(95,44,165,0.05); margin-bottom: 30px; overflow-x: auto; }
+    .card h2 { color: #5f2ca5; margin-bottom: 20px; font-size: 1.4rem; border-bottom: 2px solid #f4edff; padding-bottom: 10px; }
+
+    table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+    th, td { padding: 14px; border-bottom: 1px solid #f4edff; }
+    th { background: #f4edff; color: #5f2ca5; font-weight: 600; }
+    
+    @keyframes highlightNew { 0% { background: #ffe6ff; } 100% { background: transparent; } }
+    .new-live-row { animation: highlightNew 3s ease-out; }
+
+    .badge { padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+    .badge.pending { background: #ffeeba; color: #856404; }
+    .badge.confirmed { background: #d4edda; color: #155724; }
+    .badge.cancelled { background: #f8d7da; color: #721c24; }
+
+    .action-btn { padding: 6px 12px; border-radius: 8px; border: none; font-weight: 600; font-size: 0.85rem; cursor: pointer; margin-right: 5px; transition: 0.2s; }
+    .approve-btn { background: #28a745; color: white; }
+    .decline-btn { background: #dc3545; color: white; }
+
+    .services-admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .service-manager-card { background: #faf8ff; border: 1px solid #e1d5f5; padding: 20px; border-radius: 16px; }
+    .price-input-group { display: flex; align-items: center; gap: 5px; margin-top: 10px; }
+    .price-input-group input { width: 80px; padding: 6px; border: 1px solid #e1d5f5; border-radius: 8px; text-align: center; }
+    .save-price-btn { background: #5f2ca5; color: white; padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.85rem; transition: 0.2s; }
+    .save-price-btn:hover { background: #461978; }
+    
+    #loading-shield { text-align: center; margin-top: 150px; font-size: 1.2rem; color: #5f2ca5; font-weight: 600; }
+
+    /* Custom Toast Pop-up Layout */
+    .toast-notification {
+      position: fixed;
+      top: -100px;
+      right: 20px;
+      background: white;
+      color: #333;
+      padding: 16px 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(95, 44, 165, 0.2);
+      border-left: 5px solid #5f2ca5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      z-index: 9999;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .toast-notification.show { top: 20px; }
+    .toast-notification.success { border-left-color: #28a745; }
+    .toast-notification.error { border-left-color: #dc3545; }
+  </style>
+</head>
+<body>
+
+  <div id="custom-toast" class="toast-notification">✨ <span id="toast-message"></span></div>
+
+  <div id="loading-shield">Verifying secure portal credentials...</div>
+
+  <div id="login-screen">
+    <h2>Nail Tech Portal</h2>
+    <p style="color: #666; margin-bottom: 20px; font-size: 0.9rem;">Authorized access only</p>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" required placeholder="brooklyn@example.com">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn">Access Dashboard</button>
+    </form>
+  </div>
+
+  <div id="dashboard-screen" class="container">
+    <header>
+      <div>
+        <h1>Brooks Creations Dashboard</h1>
+        <p style="color: #666; font-size: 0.9rem;">Welcome back, Brooklynn ✨ <span style="color: #28a745; font-weight: bold;">● Live Channel Active</span></p>
+      </div>
+      <button class="logout-btn" id="logoutBtn">Log Out</button>
+    </header>
+
+    <div class="card">
+      <h2>Incoming & Realtime Bookings</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Client Name</th>
+            <th>Phone & Email</th>
+            <th>Date & Time</th>
+            <th>Notes/Inspo</th>
+            <th>Status</th>
+            <th>Quick Actions</th>
+          </tr>
+        </thead>
+        <tbody id="admin-appointments-target">
+          <tr><td colspan="6" style="text-align: center; color: #666;">Syncing dynamic calendars...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Manage Days Off / Block Dates</h2>
+      <p style="color:#666; font-size:0.85rem; margin-bottom:15px;">Block specific dates so clients cannot pick them on your form.</p>
+      <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+        <input type="date" id="block-date-input" style="padding: 10px; border-radius: 8px; border: 2px solid #e1d5f5; outline: none;">
+        <input type="text" id="block-reason-input" placeholder="Reason (e.g., Holiday, Hair appointment)" style="padding: 10px; border-radius: 8px; border: 2px solid #e1d5f5; flex-grow: 1; outline: none;">
+        <button class="save-price-btn" onclick="addBlockedDate()" style="padding: 12px 24px; border-radius: 12px; font-weight:600;">Block This Date</button>
+      </div>
+      <ul id="blocked-dates-list" style="list-style: none; padding: 0;"></ul>
+    </div>
+
+    <div class="card">
+      <h2>Service Pricing & Menu Controls</h2>
+      <div id="admin-services-target" class="services-admin-grid"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://bikbkzteuhqkjqmgzzes.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpa2JrenRldWhxa2pxbWd6emVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0Mjg0NjgsImV4cCI6MjA5NjAwNDQ2OH0.aJK3xbjIBaXZWA7an_m4Vgts4kTIryc-iyysGlgT-cg';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Toast Pop-up Helper Function
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('custom-toast');
+      toast.className = `toast-notification ${type} show`;
+      toast.innerHTML = `${type === 'success' ? '✨' : '❌'} <span id="toast-message">${message}</span>`;
+      setTimeout(() => { toast.classList.remove('show'); }, 3500);
+    }
+
+    function formatTo12Hour(timeString) {
+      if (!timeString) return '';
+      const parts = timeString.split(':');
+      let hours = parseInt(parts[0], 10);
+      const minutes = parts[1];
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12; hours = hours ? hours : 12;
+      return `${hours}:${minutes} ${ampm}`;
+    }
+
+    async function checkUserSession() {
+      const { data: { session } } = await db.auth.getSession();
+      document.getElementById('loading-shield').style.display = 'none';
+      if (session) {
+        document.getElementById('dashboard-screen').style.display = 'block';
+        loadDashboardData();
+        setupRealtimeListener();
+      } else {
+        document.getElementById('login-screen').style.display = 'block';
+      }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        const { error } = await db.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        window.location.reload();
+      } catch (err) { showToast('Authentication Denied: ' + err.message, 'error'); }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await db.auth.signOut();
+      window.location.reload();
+    });
+
+    async function loadDashboardData() {
+      await fetchAppointments();
+      await fetchServicesManager();
+      await fetchBlockedDates();
+    }
+
+    async function fetchAppointments() {
+      try {
+        const { data: appointments, error } = await db.from('appointments').select('*').order('appointment_date', { ascending: false });
+        if (error) throw error;
+        renderAppointmentsTable(appointments);
+      } catch (err) { console.error(err); }
+    }
+
+    function renderAppointmentsTable(appointments) {
+  const target = document.getElementById('admin-appointments-target');
+  target.innerHTML = '';
+  if (!appointments || appointments.length === 0) {
+    target.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#666;">No bookings found.</td></tr>`;
+    return;
+  }
+  
+  appointments.forEach(app => {
+    const row = document.createElement('tr');
+    row.id = `app-row-${app.id}`;
+    let actionButtons = `<em>Processed (${app.status})</em>`;
+    if (app.status === 'pending' || !app.status) {
+      actionButtons = `
+        <button class="action-btn approve-btn" onclick="updateStatus('${app.id}', 'confirmed')">Approve</button>
+        <button class="action-btn decline-btn" onclick="updateStatus('${app.id}', 'cancelled')">Decline</button>
+      `;
+    }
+
+    // Elegant Date Formatting Engine (Converts YYYY-MM-DD safely to Month DD, YYYY)
+    let displayDate = app.appointment_date;
+    if (app.appointment_date) {
+      const dateParts = app.appointment_date.split('-');
+      if (dateParts.length === 3) {
+        const year = dateParts[0];
+        const monthIndex = parseInt(dateParts[1], 10) - 1;
+        const day = parseInt(dateParts[2], 10);
+        
+        const fullMonthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        displayDate = `${fullMonthNames[monthIndex]} ${day}, ${year}`;
+      }
+    }
+
+    row.innerHTML = `
+      <td><strong>${app.full_name}</strong></td>
+      <td><span style="font-size:0.85rem;">${app.phone}<br>${app.email}</span></td>
+      <td><strong>${displayDate}</strong><br><span style="font-size:0.85rem; color:#5f2ca5; font-weight:600;">${formatTo12Hour(app.start_time)} - ${formatTo12Hour(app.end_time)}</span></td>
+      <td><span style="font-size:0.85rem; color:#555;">${app.notes || 'None'}</span></td>
+      <td><span class="badge ${app.status || 'pending'}">${app.status || 'pending'}</span></td>
+      <td>${actionButtons}</td>
+    `;
+    target.appendChild(row);
+  });
+}
+
+
+    function setupRealtimeListener() {
+      db.channel('dashboard-sync')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'appointments' }, (payload) => {
+          fetchAppointments().then(() => {
+            const freshRow = document.getElementById(`app-row-${payload.new.id}`);
+            if (freshRow) freshRow.className = 'new-live-row';
+          });
+        })
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'appointments' }, () => { fetchAppointments(); })
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'appointments' }, () => { fetchAppointments(); })
+        .subscribe();
+    }
+
+    async function fetchServicesManager() {
+      try {
+        const { data: services, error } = await db.from('services').select('*').order('price', { ascending: true });
+        if (error) throw error;
+        
+        const target = document.getElementById('admin-services-target');
+        target.innerHTML = '';
+
+        const categories = {
+          "Full Sets": [],
+          "Frenchie Full Set": [],
+          "Freestyle Full Set": [],
+          "Inspo Sets": [],
+          "Fill-Ins": [],
+          "Extras": []
+        };
+
+        services.forEach(svc => {
+          const name = svc.name.toLowerCase();
+          let assignedCategory = "Extras";
+
+          if (name.includes("frenchie")) {
+            assignedCategory = "Frenchie Full Set";
+          } else if (name.includes("freestyle")) {
+            assignedCategory = "Freestyle Full Set";
+          } else if (name.includes("full set")) {
+            assignedCategory = "Full Sets";
+          } else if (name.includes("inspo")) {
+            assignedCategory = "Inspo Sets";
+          } else if (name.includes("fill")) {
+            assignedCategory = "Fill-Ins";
+          }
+
+          categories[assignedCategory].push(svc);
+        });
+
+        for (const [categoryTitle, items] of Object.entries(categories)) {
+          if (items.length === 0) continue;
+
+          const sectionGroup = document.createElement('div');
+          sectionGroup.style.gridColumn = '1 / -1';
+          sectionGroup.style.marginTop = '20px';
+          sectionGroup.innerHTML = `<h3 style="color:#5f2ca5; font-size:1.1rem; border-left:3px solid #5f2ca5; padding-left:10px; margin-bottom:10px;">${categoryTitle}</h3>`;
+          target.appendChild(sectionGroup);
+
+          items.forEach(svc => {
+            const card = document.createElement('div');
+            card.className = 'service-manager-card';
+            card.innerHTML = `
+              <h4 style="color:#333; font-weight:600; font-size:1rem; margin-bottom:4px;">${svc.name}</h4>
+              <p style="font-size:0.85rem; color:#666; margin-bottom:8px;">Duration: ${svc.duration_minutes} mins</p>
+              <div class="price-input-group">
+                <label style="font-size:0.85rem; font-weight:500;">Price ($):</label>
+                <input type="number" id="price-${svc.id}" value="${parseFloat(svc.price).toFixed(0)}" step="1" style="font-weight:600; color:#5f2ca5;">
+                <button class="save-price-btn" onclick="updatePrice('${svc.id}')">Update</button>
+              </div>
+            `;
+            target.appendChild(card);
+          });
+        }
+      } catch (err) { 
+        console.error("Error formatting backend service panel:", err); 
+      }
+    }
+
+    async function fetchBlockedDates() {
+      try {
+        const { data: dates, error } = await db.from('blocked_dates').select('*').order('blocked_date', { ascending: true });
+        if (error) throw error;
+        const list = document.getElementById('blocked-dates-list');
+        list.innerHTML = '';
+        if(!dates || dates.length === 0) {
+          list.innerHTML = '<li style="color:#666; font-size:0.9rem; padding: 5px 0;">No upcoming custom dates blocked.</li>';
+          return;
+        }
+        dates.forEach(d => {
+          const li = document.createElement('li');
+          li.style = 'display:flex; justify-content:between; background:#faf8ff; padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid #e1d5f5; align-items:center;';
+          li.innerHTML = `
+            <span><strong>${d.blocked_date}</strong> - ${d.reason || 'Day Off'}</span>
+            <button onclick="deleteBlockedDate('${d.id}')" style="background:#dc3545; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.8rem; font-weight:600; margin-left:auto;">Remove Block</button>
+          `;
+          list.appendChild(li);
+        });
+      } catch(err) { console.error(err); }
+    }
+
+    window.addBlockedDate = async function() {
+      const dateVal = document.getElementById('block-date-input').value;
+      const reasonVal = document.getElementById('block-reason-input').value;
+      if(!dateVal) return showToast('Please choose a valid date from the calendar.', 'error');
+      try {
+        const { error } = await db.from('blocked_dates').insert([{ blocked_date: dateVal, reason: reasonVal }]);
+        if (error) throw error;
+        document.getElementById('block-date-input').value = '';
+        document.getElementById('block-reason-input').value = '';
+        fetchBlockedDates();
+        showToast('Date blocked successfully!', 'success');
+      } catch(err) { showToast('Error executing block: ' + err.message, 'error'); }
+    }
+
+    window.deleteBlockedDate = async function(id) {
+      try {
+        const { error } = await db.from('blocked_dates').delete().eq('id', id);
+        if (error) throw error;
+        fetchBlockedDates();
+        showToast('Block removed.', 'success');
+      } catch(err) { showToast(err.message, 'error'); }
+    }
+
+    window.updateStatus = async function(id, newStatus) {
+      try {
+        const { error } = await db.from('appointments').update({ status: newStatus }).eq('id', id);
+        if (error) throw error;
+        fetchAppointments();
+        showToast(`Appointment status changed to: ${newStatus}`, 'success');
+      } catch (err) { showToast('Status failure: ' + err.message, 'error'); }
+    }
+
+    window.updatePrice = async function(id) {
+      const newPrice = document.getElementById(`price-${id}`).value;
+      try {
+        const { error } = await db.from('services').update({ price: parseFloat(newPrice) }).eq('id', id);
+        if (error) throw error;
+        showToast('Price updated successfully!', 'success');
+      } catch (err) { showToast('Rejected: ' + err.message, 'error'); }
+    }
+
+    window.addEventListener('DOMContentLoaded', checkUserSession);
+  </script>
+</body>
+</html>
