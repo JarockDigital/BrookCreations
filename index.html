@@ -3,43 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Premium custom acrylic artwork, freestyle sets, and luxury manicures by Brooklynn White in Greensboro, NC. Book your next nail transformation today!">
   <title>Brooks Creations | Nail Tech</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="preload" as="image" href="images/hero.webp">
+  <link rel="preload" as="image" href="images/brook.webp">
+
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
 
-    html{
-      scroll-behavior:smooth;
-    }
-::-webkit-scrollbar{
-  width:10px;
-}
+    ::-webkit-scrollbar{width:10px;}
+    ::-webkit-scrollbar-track{background:#eee6ff;}
+    ::-webkit-scrollbar-thumb{background:#5f2ca5;border-radius:10px;border:2px solid #eee6ff;}
 
-::-webkit-scrollbar-track{
-  background:#eee6ff;
-}
-
-::-webkit-scrollbar-thumb{
-  background:#5f2ca5;
-  border-radius:10px;
-  border:2px solid #eee6ff;
-}
     body{
       font-family:'Poppins', sans-serif;
       background:#eee6ff;
-      color:#222;
+      color:#2a1b40;
       line-height:1.6;
       overflow-x: hidden;
+      position: relative;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: 
+        radial-gradient(circle at 0% 15%, rgba(162, 114, 255, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 100% 80%, rgba(140, 75, 245, 0.15) 0%, transparent 50%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* =============================================
+       GLITTER CANVAS (aria-hidden, motion-safe)
+    ============================================= */
+    #glitter-canvas {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* =============================================
+       HERO
+    ============================================= */
     header{
       min-height:100vh;
       display:flex;
@@ -47,239 +63,730 @@
       justify-content:center;
       text-align:center;
       padding:40px 20px;
-      background: linear-gradient(rgba(70,25,120,.72), rgba(70,25,120,.72)), url("images/hero.jpg");
-      background-size:cover;
-      background-position:center;
       color:white;
+      position: relative;
+      overflow: hidden;
     }
 
+    .hero-bg-container {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-bg-img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(70,25,120,.65), rgba(40,10,75,.8));
+    }
+
+    /* =============================================
+       KEYFRAMES
+    ============================================= */
+    @keyframes pulseGlow {
+      0%   { box-shadow: 0 0 0 0 rgba(95,44,165,0.7), 0 10px 25px rgba(95,44,165,0.4); }
+      70%  { box-shadow: 0 0 0 15px rgba(95,44,165,0), 0 10px 25px rgba(95,44,165,0.4); }
+      100% { box-shadow: 0 0 0 0 rgba(95,44,165,0), 0 10px 25px rgba(95,44,165,0.4); }
+    }
+
+    @keyframes shimmer {
+      100% { left: 125%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    @keyframes smoothRevealUp {
+      from { opacity: 0.1; transform: translateY(15px); }
+      to   { opacity: 1;   transform: translateY(0); }
+    }
+
+    /* Nail drip on the H1 — signature moment */
+    @keyframes drip {
+      0%   { clip-path: inset(0 0 100% 0); opacity: 0; }
+      10%  { opacity: 1; }
+      60%  { clip-path: inset(0 0 0% 0); }
+      100% { clip-path: inset(0 0 0% 0); opacity: 1; }
+    }
+
+    /* Subtle float for the hero card */
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-6px); }
+    }
+
+    /* Staggered card entrance */
+    @keyframes cardSlideIn {
+      from { opacity: 0; transform: translateY(22px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)  scale(1); }
+    }
+
+    /* Sparkle pop */
+    @keyframes sparklePop {
+      0%   { transform: scale(0) rotate(0deg);   opacity: 0; }
+      50%  { transform: scale(1.3) rotate(180deg); opacity: 1; }
+      100% { transform: scale(1) rotate(360deg); opacity: 0.7; }
+    }
+
+    /* Badge wiggle */
+    @keyframes badgeWiggle {
+      0%, 100% { transform: translateX(-50%) rotate(-2deg); }
+      50%       { transform: translateX(-50%) rotate(2deg); }
+    }
+
+    /* =============================================
+       REVEAL
+    ============================================= */
+    .reveal { opacity: 1; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        view-timeline-name: --reveal;
+        view-timeline-axis: block;
+        animation-name: smoothRevealUp;
+        animation-fill-mode: both;
+        animation-timeline: --reveal;
+        animation-range: entry 0% entry 15%;
+        animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+        will-change: transform, opacity;
+      }
+    }
+
+    /* =============================================
+       HERO CARD
+    ============================================= */
     .hero {
+      position: relative;
+      z-index: 3;
       max-width: 800px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      width: 100%;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       padding: 60px 30px;
       border-radius: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      overflow: hidden;
     }
 
-    .hero h1{
-  font-size: clamp(2.5rem, 8vw, 4.2rem);
-  line-height:1.1;
-  margin-bottom:15px;
-  font-weight:800;
-  letter-spacing:2px;
-  text-transform:uppercase;
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      opacity: 0.8;
+    }
 
-  background: linear-gradient(to right, #ffffff, #d8c3ff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
+    .hero::before {
+      top: -45px;
+      right: -45px;
+      width: 170px;
+      height: 170px;
+      background: radial-gradient(circle, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 60%);
+      filter: blur(8px);
+    }
+
+    .hero::after {
+      bottom: 15px;
+      left: -25px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle at 30% 30%, rgba(189,134,252,0.25), transparent 55%);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero {
+        animation: floatCard 6s ease-in-out infinite;
+      }
+    }
+
+    /* Drip title */
+    .hero h1{
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      line-height:1.2;
+      margin-bottom:15px;
+      font-weight:700;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      background: linear-gradient(to right, #ffffff, #ebdfff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero h1 {
+        animation: drip 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+    }
 
     .hero h2{
-      font-size:1.2rem;
+      font-size:1.1rem;
       font-weight:400;
-      margin-bottom:25px;
-      letter-spacing:4px;
+      margin-bottom:20px;
+      letter-spacing:6px;
       text-transform:uppercase;
-      opacity: 0.9;
+      color: #ebdfff;
     }
 
-    .hero-btn, .instagram-btn {
-      display:inline-block;
+    .typing-container {
+      margin-bottom: 25px;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: #ffffff;
+      min-height: 30px;
+    }
+
+    #typed-text {
+      border-right: 2px solid #bd86fc;
+      padding-right: 5px;
+      animation: blink 0.75s step-end infinite;
+      font-style: italic;
+      color: #f4edff;
+    }
+
+    .hero p {
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+    }
+
+    .policy-notice {
+      margin-top: 15px;
+      font-size: 0.95rem !important;
+      color: #ebdfff;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .hero-btn, .cta-btn, .inline-insta-btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 0.55rem;
       text-decoration:none;
-      padding:16px 36px;
       border-radius:50px;
       font-weight:600;
-      transition:.3s;
+      transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .hero-btn {
-      margin-top:20px;
-      background:#f4edff;
+    .icon {
+      display: inline-flex;
+      width: 1.1em;
+      height: 1.1em;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    .hero-btn, .cta-btn {
+      padding:16px 40px;
+      margin-top:15px;
+      background:#ffffff;
       color:#5f2ca5;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
-    .hero-btn:hover, .instagram-btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    .inline-insta-btn {
+      padding: 12px 28px;
+      margin-top: 20px;
+      background: linear-gradient(135deg, #5f2ca5 0%, #7a42c4 100%);
+      color: white;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(95, 44, 165, 0.2);
     }
 
-    section {
-      padding: 90px 20px;
+    .hero-btn::after, .cta-btn::after, .inline-insta-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -50%; width: 30%; height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-25deg);
+      animation: shimmer 4s infinite linear;
     }
 
-    .container{
-      max-width:1100px;
-      margin:auto;
+    .hero-btn:hover, .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(95, 44, 165, 0.25);
+      background: #f4edff;
     }
+
+    .inline-insta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(95, 44, 165, 0.35);
+    }
+
+    /* Focus rings for keyboard nav */
+    .hero-btn:focus-visible,
+    .cta-btn:focus-visible,
+    .inline-insta-btn:focus-visible,
+    .floating-booking-btn:focus-visible,
+    .contact-link:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 4px;
+      border-radius: 50px;
+    }
+
+    /* =============================================
+       FLOATING BOOK BTN
+    ============================================= */
+    .floating-booking-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: linear-gradient(135deg, #7433d3 0%, #4d0f8a 100%);
+      color: white;
+      min-width: 96px;
+      padding: 14px 16px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      z-index: 999;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 18px 32px rgba(95,44,165,0.18);
+      animation: pulseGlow 2.8s infinite alternate;
+    }
+
+    .floating-booking-btn .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .floating-booking-btn span {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .floating-booking-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 40px rgba(95,44,165,0.24);
+      background: linear-gradient(135deg, #8f67f9 0%, #5a35c7 100%);
+    }
+
+    /* =============================================
+       LAYOUT
+    ============================================= */
+    section { padding: 75px 20px; width: 100%; }
+    .container { max-width:1100px; margin:auto; }
 
     .section-title{
+      position: relative;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
       text-align:center;
-      font-size:2.4rem;
-      color:#5f2ca5;
-      margin-bottom:50px;
-      font-weight:700;
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      background: linear-gradient(135deg, #3a1370 0%, #5f2ca5 50%, #7a42c4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 40px;
+      font-weight: 700;
     }
 
-    .about-flex {
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -16px;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(189,134,252,0.8));
+      opacity: 0.95;
+    }
+
+    .section-divider { width: 60px; height: 3px; background: linear-gradient(to right, #5f2ca5, #bd86fc); margin: 0 auto; border-radius: 2px; opacity: 0.3; }
+
+    /* =============================================
+       ABOUT
+    ============================================= */
+    .about-flex-v2 {
       display:flex;
       align-items:center;
       gap:40px;
-      background:white;
+      background: #ffffff !important;
       padding:3.5rem;
       border-radius:32px;
-      box-shadow: 0 15px 40px rgba(95,44,165,0.08);
-      margin:auto;
+      box-shadow: 0 15px 40px rgba(95,44,165,0.06);
+      border: 1px solid rgba(95, 44, 165, 0.1);
     }
 
-    .about-img{
-      width:320px;
-      height:320px;
-      object-fit:cover;
-      border-radius:24px;
+    .about-img-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      border-radius: 24px;
+      overflow: hidden;
       border: 6px solid #f4edff;
+      flex-shrink: 0;
+      box-shadow: 0 8px 25px rgba(95, 44, 165, 0.1);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
     }
 
-    .about-text p{
-      font-size:1.05rem;
-      color:#444;
+    .about-img-container::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -150%; width: 50%; height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-25deg);
+      animation: shimmer 5s infinite linear;
     }
 
-    .highlight{
-      color:#5f2ca5;
-      font-weight:700;
+    .about-img-container:hover {
+      transform: scale(1.03) rotate(1deg);
+      box-shadow: 0 15px 35px rgba(95, 44, 165, 0.2);
     }
+
+    .about-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    div.about-text-v2 p,
+    #about-v2 p,
+    .about-text-v2 p {
+      color: #2a1b40 !important;
+      text-shadow: none !important;
+      font-size: 1.05rem !important;
+      line-height: 1.6 !important;
+    }
+
+    #about-v2, #about-v2 * { text-shadow: none !important; }
+
+    /* =============================================
+       CARDS — stagger + sparkle hover
+    ============================================= */
+    .highlight{ color: #461978 !important; font-weight: 700 !important; text-shadow: none !important; }
 
     .hours-grid, .policy-grid {
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
       gap:25px;
+      padding-top:15px;
     }
 
     .hours-card, .policy-card {
-      background:white;
-      padding:35px 25px;
-      border-radius:24px;
-      text-align:center;
-      border:1px solid rgba(95,44,165,0.08);
-      transition:.3s;
+      background: #ffffff;
+      padding: 35px 25px;
+      border-radius: 24px;
+      text-align: center;
+      border: 1px solid rgba(95, 44, 165, 0.1);
+      transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .3s ease, border-color .3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      /* overflow: hidden; */ /* REMOVED: Allows the featured badge to render completely */
+    }
+
+    .hours-card {
+      overflow: hidden; /* Kept on hours section for safety if needed */
+    }
+
+    /* Shimmer sweep on hover */
+    .hours-card::before, .policy-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%; width: 40%; height: 100%;
+      background: linear-gradient(to right, rgba(189,134,252,0) 0%, rgba(189,134,252,0.12) 50%, rgba(189,134,252,0) 100%);
+      transform: skewX(-20deg);
+      transition: left 0s;
+      pointer-events: none;
+    }
+
+    .hours-card:hover::before, .policy-card:hover::before {
+      left: 150%;
+      transition: left 0.55s ease;
+    }
+
+    /* Sparkle corner on hover */
+    .hours-card::after, .policy-card::after {
+      content: '✦';
+      position: absolute;
+      top: 12px; right: 14px;
+      font-size: 0.9rem;
+      color: #bd86fc;
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .hours-card:hover::after, .policy-card:hover::after {
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      /* Stagger cards by nth-child */
+      .policy-grid .policy-card:nth-child(1),
+      .hours-grid .hours-card:nth-child(1) { animation-delay: 0ms; }
+      .policy-grid .policy-card:nth-child(2),
+      .hours-grid .hours-card:nth-child(2) { animation-delay: 80ms; }
+      .policy-grid .policy-card:nth-child(3),
+      .hours-grid .hours-card:nth-child(3) { animation-delay: 160ms; }
+      .policy-grid .policy-card:nth-child(4) { animation-delay: 240ms; }
+      .policy-grid .policy-card:nth-child(5) { animation-delay: 320ms; }
+      .policy-grid .policy-card:nth-child(6) { animation-delay: 400ms; }
+    }
+
+    html body main section .container .hours-grid .hours-card p,
+    html body main section .container .policy-grid .policy-card p,
+    .hours-card p,
+    .policy-card p {
+      display: block;
+      width: 100%;
+      margin: 4px 0;
+      line-height: 1.5;
+      color: #2a1b40 !important;
+      text-shadow: none !important;
+    }
+
+    .featured-card {
+      position: relative;
+      background: #ffffff !important;
+      border-color: rgba(162, 114, 255, 0.5);
+      box-shadow: 0 10px 30px rgba(95,44,165,0.08);
+    }
+
+    /* Glow ring on featured card */
+    .featured-card:hover {
+      border-color: #bd86fc;
+      box-shadow: 0 0 0 4px rgba(189,134,252,0.15), 0 18px 35px rgba(95,44,165,0.14);
+    }
+
+    .featured-badge {
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #5f2ca5, #bd86fc);
+      color: white !important;
+      padding: 4px 14px;
+      border-radius: 30px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .featured-badge {
+        animation: badgeWiggle 3s ease-in-out infinite;
+      }
     }
 
     .hours-card:hover, .policy-card:hover{
-      transform: translateY(-8px);
-      box-shadow: 0 15px 30px rgba(95,44,165,0.12);
+      transform: translateY(-5px);
+      box-shadow: 0 18px 35px rgba(95, 44, 165, 0.12);
     }
 
     .hours-card h3, .policy-card h3 {
-      color:#5f2ca5;
+      font-family: 'Playfair Display', serif;
+      color: #461978 !important;
       margin-bottom:12px;
-      font-size:1.2rem;
+      font-size:1.4rem;
+      text-shadow: none !important;
     }
 
+    /* =============================================
+       BOOKING CTA — fixed contrast
+    ============================================= */
+    .booking-cta-section {
+      background: linear-gradient(135deg, #5f2ca5 0%, #3a1370 100%);
+      color: white;
+      text-align: center;
+      padding: 95px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle radial sparkle behind CTA */
+    .booking-cta-section::before {
+      content: '';
+      position: absolute;
+      top: -40%; left: -20%;
+      width: 60%; height: 200%;
+      background: radial-gradient(ellipse, rgba(189,134,252,0.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .booking-cta-section::after {
+      content: '';
+      position: absolute;
+      bottom: -40%; right: -20%;
+      width: 60%; height: 200%;
+      background: radial-gradient(ellipse, rgba(162,114,255,0.14) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .cta-content { position: relative; z-index: 1; }
+    .cta-content h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.2rem); margin-bottom: 15px; color: white; }
+
+    /* FIXED: was #f4edff on purple bg — now white for proper contrast */
+    .cta-content p { color: #ffffff; font-size: 1.1rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+    .cta-btn { background: #ffffff; color: #461978 !important; padding: 18px 45px; font-size: 1.05rem; }
+
+    /* =============================================
+       CONTACT BOX
+    ============================================= */
     .contact-box{
-      background: linear-gradient(135deg, #5f2ca5, #461978);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius:35px;
-      padding:50px 30px;
-      text-align:center;
-      color:white;
-      box-shadow: 0 20px 50px rgba(95,44,165,0.2);
+      padding:50px 40px;
+      max-width: 600px;
+      margin: 45px auto 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
-    footer{
-      background:#5f2ca5;
-      color:white;
-      text-align:center;
-      padding:40px 20px;
+    /* Fixed: contact heading was hard to read — bumped to white */
+    .contact-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: #ffffff !important;
     }
 
-    @media(max-width:768px){
-      header{
-        min-height:85vh;
-        padding:20px;
-      }
+    .contact-item { margin: 25px 0; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 12px; color: #ffffff; }
+    .contact-item svg { width: 1.25rem; height: 1.25rem; color: #ebdfff; flex-shrink: 0; }
 
-      .hero h1{
-        font-size:2.6rem;
-      }
+    /* FIXED: contact links now pass contrast (#ffffff on purple bg) */
+    .contact-link { color: #ffffff !important; text-decoration: none; font-weight: 600; border-bottom: 2px solid rgba(255,255,255,0.35); transition: border-color .2s; }
+    .contact-link:hover { border-bottom-color: #ffffff; }
 
-      .about-flex{
-        flex-direction:column;
-        text-align:center;
-        padding:25px;
-      }
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer{ background:#3a1370; color:#ffffff; text-align:center; padding:40px 20px; }
 
-      .about-img{
-        width:100%;
-        max-width:280px;
-        height:auto;
-      }
-
-      section{
-        padding:65px 15px;
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media(max-width:768px) {
+      header{ min-height:80vh; padding:20px; }
+      .hero h1{ font-size:2.4rem; }
+      .about-flex-v2{ flex-direction:column; text-align:center; padding:25px; }
+      .about-img-container { width: 100%; max-width: 280px; height: 280px; }
+      section{ padding:60px 15px; }
+      .contact-box { padding: 40px 20px; }
+      .contact-item { flex-direction: column; gap: 4px; margin: 20px 0; }
+      .floating-booking-btn { bottom: 25px; right: 25px; width: 65px; height: 65px; }
+      
+      /* Target mobile grid stacking spacing to let the absolute item rest safely */
+      .featured-card {
+        margin-top: 15px !important;
       }
     }
-    .instagram-btn{
-  margin-top:25px;
-  display:inline-block;
-  background:white;
-  color:#5f2ca5;
-  padding:14px 28px;
-  border-radius:50px;
-  font-weight:600;
-  text-decoration:none;
-  transition:.3s;
-}
+
+    /* Skip link for keyboard / screen-reader users */
+    .skip-link {
+      position: absolute;
+      top: -999px; left: 0;
+      background: #5f2ca5;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 0 0 8px 0;
+      font-weight: 700;
+      z-index: 10000;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 0; }
   </style>
 </head>
 
 <body>
 
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <a class="floating-booking-btn" href="https://ig.me/m/brookscreations" target="_blank" rel="noopener noreferrer" aria-label="Book an appointment via Instagram DM">
+    <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" role="img">
+      <path d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1a3 3 0 0 1 3 3v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a3 3 0 0 1 3-3V3a1 1 0 0 1 1-1zm11 5H6v12h12V7zm-8 3h2v2H10v-2zm4 0h2v2h-2v-2z"/>
+    </svg>
+    <span>Book</span>
+  </a>
+
   <header>
+    <div class="hero-bg-container" aria-hidden="true">
+      <img class="hero-bg-img" src="images/hero.webp" width="1920" height="1080" alt="" decoding="async" fetchpriority="high">
+      <div class="hero-overlay"></div>
+    </div>
+
+    <canvas id="glitter-canvas" aria-hidden="true" role="presentation"></canvas>
+
     <div class="hero">
-      <h1>BROOKS CREATIONS</h1>
+      <h1>Brooks Creations</h1>
       <h2>Nail Tech</h2>
+
+      <div class="typing-container" aria-live="polite" aria-atomic="true">
+        <span id="typed-text"></span>
+      </div>
+
       <p><strong>Brooklynn White</strong></p>
       <p>Beginner Nail Artist • Home Based</p>
       <p>Greensboro, North Carolina</p>
       <p>$10 Non-Refundable Deposit Required</p>
-      <a class="hero-btn" href="https://instagram.com/brookscreations" target="_blank">DM To Book</a>
+      <p class="policy-notice">Please review booking policies, availability and pricing below before scheduling</p>
+      <a class="hero-btn" href="https://ig.me/m/brookscreations" target="_blank" rel="noopener noreferrer">DM To Book ✨</a>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
 
-    <section id="about">
+    <section id="about-v2" class="reveal">
       <div class="container">
         <h2 class="section-title">Meet Your Nail Tech</h2>
+        <div class="about-flex-v2">
+          <div class="about-img-container">
+            <img class="about-img" src="images/brook.webp" width="320" height="320" alt="Brooklynn White, nail technician at Brooks Creations" loading="lazy" decoding="async">
+          </div>
 
-        <div class="about-flex">
-          <img class="about-img" src="images/brook.jpg" alt="Brooklynn White Nail Tech">
-
-          <div class="about-text">
-            <p>Hello to all my beautiful clients and future clients! I’m Brooklynn, but y’all can call me Brook.</p>
+          <div class="about-text-v2">
+            <p>Hello to all my beautiful clients and future clients! I'm Brooklynn, but y'all can call me Brook.</p>
             <br>
-            <p>I’ve been doing nails for about 2 years and I’m still growing in my journey. Thank you to all my returning clients for trusting me to slay your nails!</p>
+            <p>I've been doing nails for about 2 years and I'm still growing in my journey. Thank you to all my returning clients for trusting me to slay your nails!</p>
+
+            <a href="https://instagram.com/brookscreations" target="_blank" rel="noopener noreferrer" class="inline-insta-btn" style="color: white !important;">
+              <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" role="img" style="margin-right: 6px; color: white;"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm6.25-.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/></svg> View My Sets On Instagram
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="hours">
+    <div class="section-divider" role="separator" aria-hidden="true"></div>
+
+    <section id="hours" class="reveal">
       <div class="container">
         <h2 class="section-title">Business Hours</h2>
-
         <div class="hours-grid">
           <div class="hours-card">
             <h3>Mon, Wed, Fri, Sat</h3>
-            <p>5:30 PM - 8:30 PM</p>
+            <p>5:30 PM – 9:00 PM</p>
           </div>
-
           <div class="hours-card">
-            <h3>Tuesday & Thursday</h3>
-            <p>5:00 AM - 9:00 PM</p>
+            <h3>Tuesday &amp; Thursday</h3>
+            <p>5:00 AM – 9:00 PM</p>
           </div>
-
           <div class="hours-card">
             <h3>Sunday</h3>
             <p>Closed</p>
@@ -287,132 +794,285 @@
         </div>
       </div>
     </section>
-<section id="pricing">
-  <div class="container">
-    <h2 class="section-title">Pricing</h2>
 
-    <div class="policy-grid">
+    <div class="section-divider" role="separator" aria-hidden="true"></div>
 
-      <div class="policy-card">
-        <h3>Full Sets</h3>
-
-        <p><span class="highlight">Short:</span> $25</p>
-        <p><span class="highlight">Medium:</span> $30</p>
-        <p><span class="highlight">Long:</span> $45</p>
-        <p><span class="highlight">XL:</span> $50</p>
-        
-      </div>
-
-      <div class="policy-card">
-        <h3>Frenchie Full Set</h3>
-
-        <p><span class="highlight">Short:</span> $30</p>
-        <p><span class="highlight">Medium:</span> $35</p>
-        <p><span class="highlight">Long:</span> $50</p>
-        <p><span class="highlight">XL:</span> $55</p>
-      </div>
-
-      <div class="policy-card">
-        <h3>Freestyle Full Set</h3>
-
-        <p><span class="highlight">Short:</span> $35</p>
-        <p><span class="highlight">Medium:</span> $40</p>
-        <p><span class="highlight">Long:</span> $55</p>
-        <p><span class="highlight">XL:</span> $60</p>
-      </div>
-
-      <div class="policy-card">
-        <h3>Inspo Sets</h3>
-
-        <p><span class="highlight">Short:</span> $40</p>
-        <p><span class="highlight">Medium:</span> $45</p>
-        <p><span class="highlight">Long:</span> $60</p>
-        <p><span class="highlight">XL:</span> $65</p>
-        <p><span class="highlight">8+ Extendo:</span> $80</p>
-      </div>
-
-      <div class="policy-card">
-        <h3>Fill-Ins</h3>
-
-        <p><span class="highlight">Short:</span> $40</p>
-        <p><span class="highlight">Medium:</span> $50</p>
-        <p><span class="highlight">Long:</span> $60</p>
-      </div>
-
-      <div class="policy-card">
-        <h3>Extras</h3>
-
-        <p><span class="highlight">Soak Offs:</span> $15</p>
-        <p><span class="highlight">Kids Manicure:</span> $12</p>
-        <p><span class="highlight">Adult Manicure:</span> $18</p>
-        <p><span class="highlight">Repairs:</span> Free within 1 week</p>
-        <p><span class="highlight">2 Weeks:</span> $10</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-    <section id="policies">
+    <section id="pricing" class="reveal">
       <div class="container">
-        <h2 class="section-title">Booking Policies</h2>
-
+        <h2 class="section-title">Pricing Menu</h2>
         <div class="policy-grid">
-
           <div class="policy-card">
-            <h3>Cancellations</h3>
-            <p>24-hour notice required to cancel or reschedule.</p>
+            <h3>Full Sets</h3>
+            <p><span class="highlight">Short:</span> $25</p>
+            <p><span class="highlight">Medium:</span> $30</p>
+            <p><span class="highlight">Long:</span> $45</p>
+            <p><span class="highlight">XL:</span> $50</p>
           </div>
-
           <div class="policy-card">
-            <h3>Deposits</h3>
-            <p>A <span class="highlight">$10 non-refundable deposit</span> is required for all sets.</p>
+            <h3>Frenchie Full Set</h3>
+            <p><span class="highlight">Short:</span> $30</p>
+            <p><span class="highlight">Medium:</span> $35</p>
+            <p><span class="highlight">Long:</span> $50</p>
+            <p><span class="highlight">XL:</span> $55</p>
           </div>
-
           <div class="policy-card">
-            <h3>Late Policy</h3>
-            <p>
-              10-minute grace period. After 10 minutes, a <span class="highlight">$10 late fee</span> applies.
-            </p>
-            <p>
-              After 15 minutes, your appointment will be <span class="highlight">cancelled</span>.
-            </p>
+            <h3>Freestyle Full Set</h3>
+            <p><span class="highlight">Short:</span> $35</p>
+            <p><span class="highlight">Medium:</span> $40</p>
+            <p><span class="highlight">Long:</span> $55</p>
+            <p><span class="highlight">XL:</span> $60</p>
           </div>
-
+          <div class="policy-card featured-card">
+            <div class="featured-badge" aria-label="Most Popular Choice">Most Popular Choice</div>
+            <h3>Inspo Sets</h3>
+            <p><span class="highlight">Short:</span> $40</p>
+            <p><span class="highlight">Medium:</span> $45</p>
+            <p><span class="highlight">Long:</span> $60</p>
+            <p><span class="highlight">XL:</span> $65</p>
+            <p><span class="highlight">8+ Extendo:</span> $80</p>
+          </div>
+          <div class="policy-card">
+            <h3>Fill-Ins</h3>
+            <p><span class="highlight">Short:</span> $40</p>
+            <p><span class="highlight">Medium:</span> $50</p>
+            <p><span class="highlight">Long:</span> $60</p>
+          </div>
+          <div class="policy-card">
+            <h3>Extras</h3>
+            <p><span class="highlight">Soak Offs:</span> $15</p>
+            <p><span class="highlight">Kids Manicure:</span> $12</p>
+            <p><span class="highlight">Adult Manicure:</span> $18</p>
+            <p><span class="highlight">Repairs:</span> Free within 1 week</p>
+            <p><span class="highlight">2 Weeks:</span> $10</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="contact">
-  <div class="container">
-    <div class="contact-box">
+    <div class="section-divider" role="separator" aria-hidden="true"></div>
 
-      <h2 class="section-title" style="color:white;">
-        Stay Connected
-      </h2>
+    <section id="policies" class="reveal">
+      <div class="container">
+        <h2 class="section-title">Booking Policies</h2>
+        <div class="policy-grid">
+          <div class="policy-card">
+            <h3>Cancellations</h3>
+            <p>24-hour notice required to cancel or reschedule.</p>
+          </div>
+          <div class="policy-card">
+            <h3>Deposits</h3>
+            <p>A <span class="highlight">$10 non-refundable deposit</span> is required for all sets.</p>
+          </div>
+          <div class="policy-card">
+            <h3>Late Policy</h3>
+            <p>10-minute grace period. After 10 minutes, a <span class="highlight">$10 late fee</span> applies.</p>
+            <p>After 15 minutes, your appointment will be <span class="highlight">cancelled</span>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <p><strong>Phone:</strong> (336) 417-9186</p>
+    <section class="booking-cta-section reveal" id="contact">
+      <div class="container cta-content">
+        <h2>Ready to Book Your Appointment?</h2>
+        <p>Slots open monthly. Grab your calendar spot, send your layout inspo pictures over via DM, and let's create something beautiful!</p>
+        <a class="cta-btn" href="https://ig.me/m/brookscreations" target="_blank" rel="noopener noreferrer">DM To Book Your Set</a>
 
-      <p><strong>Email:</strong> brookscreations@gmail.com</p>
+        <div class="contact-box">
+          <h3>Stay Connected</h3>
 
-      <p><strong>Instagram:</strong> @brookscreations</p>
+          <div class="contact-item">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" role="img"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-5 3V6a2 2 0 0 1 2-2zm2 4v2h12V8H6zm0 4v2h8v-2H6z"/></svg>
+            <span>
+              <strong>Phone:</strong>
+              <a class="contact-link" href="sms:+13364179186?&body=Hey%20Brook!%20I%20saw%20your%20nail%20page%20and%20I'm%20interested%20in%20booking%20a%20set.%20Are%20you%20available%3F">
+                (336) 417-9186
+              </a>
+            </span>
+          </div>
 
-      <p><strong>TikTok:</strong> @brookscreations</p>
+          <div class="contact-item">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" role="img"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 2v.01L12 13l8-5.99V7H4zm16 10V9.4l-7.4 5.55a1 1 0 0 1-1.2 0L4 9.4V17h16z"/></svg>
+            <span>
+              <strong>Email:</strong>
+              <a class="contact-link" href="mailto:brookscreations@gmail.com?subject=Nail%20Inquiry%20-%20Brooks%20Creations">
+                brookscreations@gmail.com
+              </a>
+            </span>
+          </div>
 
-      <a class="instagram-btn"
-         href="https://instagram.com/brookscreations"
-         target="_blank">
-        Book on Instagram
-      </a>
+          <div class="contact-item">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" role="img"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm6.25-.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/></svg>
+            <span>
+              <strong>Instagram:</strong>
+              <a class="contact-link" href="https://instagram.com/brookscreations" target="_blank" rel="noopener noreferrer">
+                @brookscreations
+              </a>
+            </span>
+          </div>
 
-    </div>
-  </div>
-</section>
+          <div class="contact-item">
+  <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" role="img">
+    <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743 2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8a8.13 8.13 0 0 0 3.77 1.186v-2.5a4.75 4.75 0 0 1-.001-.001z"/>
+  </svg>
+  <span>
+    <strong>TikTok:</strong>
+    <a class="contact-link" href="https://www.tiktok.com/@brookscreations67" target="_blank" rel="noopener noreferrer">
+      @brookscreations
+    </a>
+  </span>
+</div>
+
+
+        </div>
+      </div>
+    </section>
 
   </main>
 
   <footer>
     <p>Thank You For Booking ✨ | Greensboro, NC</p>
   </footer>
+
+  <script>
+    /* =============================================
+       TYPING EFFECT
+    ============================================= */
+    const phrases = [
+      "Custom Nail Artwork ✨",
+      "Slayed Inspo Sets 💅",
+      "Flawless Freestyle Designs 🔥",
+      "Growing & Perfecting My Craft Daily 📈"
+    ];
+    let phraseIndex = 0;
+    let characterIndex = 0;
+    const targetElement = document.getElementById("typed-text");
+
+    function typeEffect() {
+      if (characterIndex < phrases[phraseIndex].length) {
+        targetElement.textContent += phrases[phraseIndex].charAt(characterIndex);
+        characterIndex++;
+        setTimeout(typeEffect, 50);
+      } else {
+        setTimeout(eraseEffect, 2000);
+      }
+    }
+
+    function eraseEffect() {
+      if (characterIndex > 0) {
+        targetElement.textContent = phrases[phraseIndex].substring(0, characterIndex - 1);
+        characterIndex--;
+        setTimeout(eraseEffect, 25);
+      } else {
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        setTimeout(typeEffect, 200);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => requestAnimationFrame(typeEffect), 400);
+    });
+
+    /* =============================================
+       GLITTER CANVAS — respects prefers-reduced-motion
+    ============================================= */
+    (function () {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+
+      const canvas = document.getElementById('glitter-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [], raf;
+      let isPageVisible = true;
+      let frameCount = 0;
+
+      const COLORS = ['rgba(255,255,255,0.8)', 'rgba(189,134,252,0.72)', 'rgba(235,223,255,0.68)', 'rgba(255,255,255,0.55)'];
+
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+
+      function makeParticle() {
+        return {
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.5 + 0.5,
+          dx: (Math.random() - 0.5) * 0.2,
+          dy: -(Math.random() * 0.25 + 0.08),
+          alpha: 0,
+          maxAlpha: Math.random() * 0.45 + 0.15,
+          fadeIn: true,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          life: 0,
+          maxLife: Math.random() * 190 + 90
+        };
+      }
+
+      function init() {
+        resize();
+        particles = Array.from({ length: 45 }, makeParticle);
+        // stagger life so they don't all pop at once
+        particles.forEach(p => { p.life = Math.random() * p.maxLife; p.alpha = Math.random() * p.maxAlpha; });
+      }
+
+      function draw() {
+        if (!isPageVisible) {
+          raf = null;
+          return;
+        }
+
+        frameCount++;
+        if (frameCount % 2 !== 0) {
+          raf = requestAnimationFrame(draw);
+          return;
+        }
+
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach((p, i) => {
+          p.life++;
+          p.x += p.dx;
+          p.y += p.dy;
+
+          if (p.fadeIn) {
+            p.alpha = Math.min(p.alpha + 0.012, p.maxAlpha);
+            if (p.alpha >= p.maxAlpha) p.fadeIn = false;
+          } else {
+            p.alpha = Math.max(p.alpha - 0.006, 0);
+          }
+
+          if (p.life >= p.maxLife || p.alpha <= 0) {
+            particles[i] = makeParticle();
+            return;
+          }
+
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        raf = requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize, { passive: true });
+      document.addEventListener('visibilitychange', () => {
+        isPageVisible = document.visibilityState === 'visible';
+        if (isPageVisible && !raf) {
+          frameCount = 0;
+          draw();
+        }
+      }, { passive: true });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        init();
+        draw();
+      });
+    })();
+  </script>
 
 </body>
 </html>
